@@ -1,11 +1,22 @@
 const express = require("express");
 const env = require("dotenv");
-const bodyParser = require("body-parser")
+const mongoose = require('mongoose');
+
 app = express();
 
 
 // Environmet variables or you can say constants
 env.config();
+
+mongoose.connect(
+    'mongodb://localhost:27017/test',
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    }
+).then(() => {
+    console.log("Databse connected")
+})
 
 app.use(express.json());
 
