@@ -9,7 +9,7 @@ app = express();
 env.config();
 
 mongoose.connect(
-    'mongodb://localhost:27017/test',
+    `mongodb+srv://${process.env.MONGO_DB_USER}:${process.env.MONGO_DB_PASSWORD}@cluster0.pocaj.mongodb.net/${process.env.MONGO_DB_DATABASE}?retryWrites=true&w=majority`,
     {
         useNewUrlParser: true,
         useUnifiedTopology: true
