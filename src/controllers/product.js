@@ -45,27 +45,42 @@ exports.getProductBySlug = (req, res) => {
 
       if (category) {
         Product.find({ category: category._id }).exec((error, products) => {
-            if (products.length > 0) {
-                return res.status(200).json({
-                  products,
-                  productsByPrice: {
-                    under5k: products.filter((product) => product.price <= 5000),
-                    under10k: products.filter(
-                      (product) => product.price > 5000 && product.price <= 10000
-                    ),
-                    under15k: products.filter(
-                      (product) => product.price > 10000 && product.price <= 15000
-                    ),
-                    under20k: products.filter(
-                      (product) => product.price > 15000 && product.price <= 20000
-                    ),
-                    under30k: products.filter(
-                      (product) => product.price > 20000 && product.price <= 30000
-                    ),
-                  },
-                });
-            }
+          if (products.length > 0) {
+            return res.status(200).json({
+              products,
+              productsByPrice: {
+                under5k: products.filter((product) => product.price <= 5000),
+                under10k: products.filter(
+                  (product) => product.price > 5000 && product.price <= 10000
+                ),
+                under15k: products.filter(
+                  (product) => product.price > 10000 && product.price <= 15000
+                ),
+                under20k: products.filter(
+                  (product) => product.price > 15000 && product.price <= 20000
+                ),
+                under30k: products.filter(
+                  (product) => product.price > 20000 && product.price <= 30000
+                ),
+              },
+            });
+          }
         });
       }
     });
+};
+
+exports.getProductDetailsById = (req, res) => {
+  const { productId } = req.params;
+  if (productId) {
+    Product.findOne({ _id: productId }).exec((error, product) => {
+      if (error) return res.status(400).json({ error });
+      if (product) {
+        return res.status(200).json({ product });
+      }
+    });
+  } else {
+    return res.status(400).json({ error: "Params required" });
+  }
+  
 };
