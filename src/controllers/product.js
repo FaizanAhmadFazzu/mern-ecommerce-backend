@@ -42,7 +42,6 @@ exports.getProductBySlug = (req, res) => {
       if (error) {
         return res.status(200).json({ error });
       }
-      console.log(category);
       if (category) {
         Product.find({ category: category._id }).exec((error, products) => {
           if (category.type) {
