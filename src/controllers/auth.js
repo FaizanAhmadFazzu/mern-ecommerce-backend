@@ -2,6 +2,12 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
+const generateJWToken = (_id, role) => {
+  return jwt.sign({ _id, role }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+};
+
 exports.signup = async (req, res) => {
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (user)
@@ -20,14 +26,18 @@ exports.signup = async (req, res) => {
     username: Math.random().toString(),
   });
 
-  _user.save((error, data) => {
+  _user.save((error, user) => {
     if (error) {
       return res.status(400).json({
         message: "Something went wrong",
       });
-    } else {
+    }
+    if (user) {
+      const token = generateJWToken(user._id, user.role);
+      const { _id, firstName, lastName, email, role, fullName } = user;
       return res.status(201).json({
-        message: "User created Successfully..!",
+        token,
+        user: { _id, firstName, lastName, email, role, fullName },
       });
     }
   });
