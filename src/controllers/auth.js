@@ -9,10 +9,10 @@ const generateJWToken = (_id, role) => {
 };
 
 exports.signup = async (req, res) => {
-  User.findOne({ email: req.body.email }).exec((error, user) => {
+  User.findOne({ email: req.body.email }).exec(async (error, user) => {
     if (user)
       return res.status(400).json({
-        message: "User already registered",
+        error: "User already registered",
       });
   });
 
@@ -31,8 +31,7 @@ exports.signup = async (req, res) => {
       return res.status(400).json({
         message: "Something went wrong",
       });
-    }
-    if (user) {
+    } else {
       const token = generateJWToken(user._id, user.role);
       const { _id, firstName, lastName, email, role, fullName } = user;
       return res.status(201).json({
