@@ -4,8 +4,7 @@
   "description": "This is backend of ecommerce flipcart clone project",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./src/index.server.js"
+    "start": "node ./src/index.server.js"
   },
   "keywords": [
     "mern",
